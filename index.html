@@ -1,0 +1,177 @@
+<html>
+<head>
+	<title>Fresh LFT</title>
+	<style type="text/css">
+		a{
+			color: #3A84E8;
+		}
+		body{
+			height: 120vh;
+			margin: 0px;
+			padding: 0px;
+			background-color: #141414;
+			overflow: hidden;
+		}
+		input{
+			height: 3vh;
+			width: 80%;
+			font-size: 2vh;
+		}
+		h1{
+			color: red;
+		}
+		label{
+			font-size: 2vh;
+			color: white;
+		}
+		button{
+			width: 80%;
+			color: white;
+			font-size: 2vh
+		}
+		#submissionform{
+			margin-top: 20%;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+		}
+		#topimg{
+			display: none;
+			top: 0px;
+			position: fixed;
+			width: 100%;
+		}
+		#bottomimg{
+			display: none;
+			bottom: 0px;
+			position: fixed;
+			width: 100%;
+		}
+		#display{ 
+			margin-top: 20vh;
+			min-height: 100%;
+			display: none;
+			margin-left: 50px;
+			margin-right: 50px;
+		}
+		p{
+			color: #E1E1E1;
+			font-size: 40px;
+			font-family: Calibri, sans-serif;
+		}
+	</style>
+	<script type="text/javascript">
+	function capitalizeTheFirstLetterOfEachWord(words) {
+	   var separateWord = words.toLowerCase().split(' ');
+	   for (var i = 0; i < separateWord.length; i++) {
+	      separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+	      separateWord[i].substring(1);
+	   }
+	   return separateWord.join(' ');
+	}
+	async function submitDetails(){
+		var time = "00:00"
+		var name = ""
+		var username = ""
+		var bannerid = ""
+		var date = "01-January-2022"
+
+		const userregex = /[A-Z]{4}\d{2}/;
+        const banneridregex = /[0-9]{9}/;
+
+		displaybox = document.getElementById("display");
+
+		name = capitalizeTheFirstLetterOfEachWord(document.getElementById("namebox").value);
+		username = document.getElementById("usernamebox").value.toUpperCase();
+		bannerid = document.getElementById("banneridbox").value;
+		
+		time = `${("0" + (Math.floor(Math.random() * 3) + 9)).slice(-2)}:${("0" + Math.floor(Math.random() * 60)).slice(-2)}`
+
+		const dateobj = new Date()
+    	date = `${("0" + dateobj.getDate()).slice(-2)}-${dateobj.toLocaleString('default', { month: 'long' })}-${dateobj.getFullYear()}`
+
+    	var errorbox = document.getElementById("error");
+
+    	if(!name.trim() && name.split(" ").length <= 2){
+        	errorbox.innerHTML = "Name is invalid!";
+        }
+        else if(!username.match(userregex)){
+            errorbox.innerHTML = 'Username is invalid';
+        }
+        else if(!bannerid.match(banneridregex)){
+            errorbox.innerHTML = 'BannerId is not valid';
+        }
+        else{
+        	const content = `Name: ${name.toUpperCase()}%0AUsername: ${username}%0A${("0" + dateobj.getDate()).slice(-2)} ${dateobj.toLocaleString('default', { month: 'short' })} ${dateobj.getFullYear()}: NEGATIVE%0ATest ref. ${Math.floor(Math.random() * 100000) + 150000}`
+			var topbodytext = `Name: ${name} </br>
+Banner ID: ${bannerid} </br>
+</br>
+</br>
+Thank you for taking part in the LFT mass testing effort.</br>
+</br>
+${name} received a negative result on the test recorded ${time} on ${date} at Durham University, Durham, United Kingdom. The University's Incident Control Centre (ICC) has also been notified for reporting purposes.</br>`
+
+			var bottombodytext = `You may continue as normal unless a member of your household tests positive or you are contacted by NHS Test and Trace or the NHS COVID-19 app informing you of a need to self-isolate. </br>
+		</br>
+If any member of your household tests positive, you will be required to self-isolate and follow <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/testing-and-tracing/what-your-test-result-means/">Government</a> and <a href="https://www.dur.ac.uk/coronavirus/youruniversity/">University guidance.</a></br>
+</br>
+You may also book a further LFT test. It is recommended that you test twice weekly. If this is your first test upon arriving back in Durham, you will need to test a further two times, four and seven days after your first test, and twice weekly thereafter.</br>
+</br>
+If you have any further questions, please email <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/testing-and-tracing/what-your-test-result-means/">covid.test@durham.ac.uk.</a></br>
+</br>
+Regards,</br>
+The Covid Team</br>
+Durham University</br>
+</br>
+<b>Travel Disclaimer</b></br>
+The University's LFT testing process does not provide the PCR test normally required for travelling abroad. Please contact your travel provider for further information on acquiring tests for this purpose.`
+
+			var smalltext = `The information in this e-mail and any attachments is confidential. It is intended solely for the addressee or addressees. If you are not the intended recipient please delete the message and any attachments and notify the sender of misdelivery. Any use or disclosure of the contents of either is unauthorised and may be unlawful. This e-mail has been created in the knowledge that Internet e-mail is not a 100% secure communications medium. We advise that you understand and observe this lack of security when e-mailing us. Although steps have been taken to ensure that this e-mail and any attachments are free from any virus, we advise that in keeping with good computing practice the recipient should ensure they are actually virus free. All liability for viruses is excluded to the fullest extent permitted by law.`
+
+			toptext = document.createElement("p");
+			toptext.innerHTML = topbodytext;
+			displaybox.appendChild(toptext);
+
+			var qrcode = document.createElement("img");
+			qrcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=290x290&data=${content}`;
+			qrcode.width = 290;
+			qrcode.height = 290;
+
+			displaybox.appendChild(qrcode);
+
+			bottomtext = document.createElement("p");
+			bottomtext.innerHTML = bottombodytext;
+			displaybox.appendChild(bottomtext);
+
+			disclaimer = document.createElement("p");
+			disclaimer.innerHTML = smalltext;
+			disclaimer.style.fontSize = "26px"
+			displaybox.appendChild(disclaimer)
+
+			document.getElementById("display").style.display = "block";
+			document.getElementById("submissionform").style.display = "none";
+
+			document.getElementById("bottomimg").style.display = "initial"
+			document.getElementById("topimg").style.display = "initial"
+	    }
+	}
+
+	</script>
+</head>
+<body>
+	<div id="submissionform">
+		<label for="name">Full Name:</label>
+  		<input type="text" id="namebox" name="namebox"><br><br>
+  		<label for="username">University username (4 letters, 2 numbers):</label>
+  		<input type="text" id="usernamebox" name="usernamebox"><br><br>
+  		<label for="name">Banner ID (9 numbers):</label>
+  		<input type="text" id="banneridbox" name="banneridbox"><br><br>
+  		<h1></h1 id="error">
+  		<button onclick="submitDetails()"> Submit </button>
+	</div>
+	<img src="top.png" id="topimg">
+	<div id="display">
+	</div>
+	<img src="bottom.png" id="bottomimg">
+</body>
+</html>
