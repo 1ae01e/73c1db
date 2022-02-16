@@ -55,7 +55,7 @@
 			margin-right: 50px;
 		}
 		#qr{
-			border: 5px solid white;
+			border: 20px solid white;
 		}
 		p{
 			color: #E1E1E1;
@@ -136,9 +136,9 @@ The University's LFT testing process does not provide the PCR test normally requ
 			displaybox.appendChild(toptext);
 
 			var qrcode = document.createElement("img");
-			qrcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=290x290&data=${content}`;
-			qrcode.width = 280;
-			qrcode.height = 280;
+			qrcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${content}`;
+			qrcode.width = 250;
+			qrcode.height = 250;
 			qrcode.id = "qr";
 
 			displaybox.appendChild(qrcode);
